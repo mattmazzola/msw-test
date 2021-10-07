@@ -1,24 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
 function App() {
+
+  const [response, setResponse] = React.useState('');
+
+  const onClickSend = async () => {
+
+    const response = await fetch('/api/results', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        message: 'Hello World'
+      })
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      setResponse(json);
+    }
+    else {
+      const responseText = `${response.status} ${response.statusText}`;
+      setResponse(responseText)
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      <header>
+        <h1>MSW Tester</h1>
       </header>
+      <main>
+        <p>
+        Click to send a request and display the response
+        </p>
+        <button onClick={onClickSend}>Send</button>
+        <pre>{JSON.stringify(response, null, 2)}</pre>
+      </main>
     </div>
   );
 }
