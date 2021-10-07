@@ -45,7 +45,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div data-testid="app">
       <header>
         <h1>MSW Tester</h1>
       </header>
